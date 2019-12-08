@@ -21,6 +21,8 @@ export EDITOR='vim'
 export VISUAL='vim'
 export PAGER='less -R'
 
+export TERM='xterm-color'
+
 #
 # Language
 #
