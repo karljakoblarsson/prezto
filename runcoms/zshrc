@@ -1,13 +1,128 @@
+# Karl Jakob Larsson 2016
 #
-# Executes commands at the start of an interactive session.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
+# Updated for linux june 2018
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# Start ssh-agent if login shell
+if ! pgrep -U "$USER" ssh-agent > /dev/null; then
+    ssh-agent >| ~/.ssh-agent-parameters
+fi
+
+if [[ "$SSH_AGENT_PID" == "" ]]; then
+    eval "$(<~/.ssh-agent-parameters)" > /dev/null
+fi
+
+# OSX
+#path=('/usr/local/bin' $path)
+#path=('$(brew --prefix homebrew/php/php56)/bin' $path)
+#path+=(/Applications/Racket/bin)
+#path+=('/Applications/LilyPond.app/Contents/Resources/bin')
+#path+=('/Applications/blender.app/Contents/MacOS')
+
+#path+=('/Users/jakob/.cabal/bin')
+#path+=('/Users/jakob/.local/bin')
+#path+=('/Users/jakob/Library/Python/3.6')
+
+path+=('/home/jakob/.local/bin')
+
+path+=('/home/jakob/chalmers/os/pintos/src/utils')
+export BXSHARE='/usr/share/bochs'
+
+export path
+
+
+lua_path+=('/home/jakob/.luarocks')
+export lua_path
+#LIBRARY_PATH=('/opt/X11/lib' $LIBRARY_PATH)
+#export LIBRARY_PATH
+
+#NODE_PATH=('/usr/local/lib/node_modules')
+#export NODE_PATH
+
+#export VISUAL='mvim -f';
+export VISUAL='vim';
+export EDITOR="$VISUAL"
+
+alias vi='vim'
+alias v='vim'
+
+alias e='emacs -nw'
+alias emacs='emacs -nw'
+
 # Customize to your needs...
+#alias jobb='Documents/jobb'
+#alias matlab='/Applications/MATLAB_R2015b.app/bin/matlab -nodesktop'
+#alias annsofie='ssh -p 2802 95.80.10.33'
+#alias gadd='git add . && git status'
+#alias scm=racket
+alias czsh='vim ~/.zshrc && source ~/.zshrc'
+alias csway='vim ~/.config/sway/config && swaymsg reload'
+#alias ann=annsofie
+#alias mountAnn='sudo mkdir /Volumes/annsofie && sudo mount -t nfs -o rw,resvport,soft,intr,rsize=8192,wsize=8192,timeo=900,retrans=3,proto=tcp annsofie:/srv/files /Volumes/annsofie'
+#alias speak='while read line ; do echo $line | say ; done; '
+#alias joinPDF='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
+
+alias ll='ls -lh'
+alias la='ls -lha'
+
+alias gh='git status'
+alias gs='git status'
+alias ga='git add'
+alias g='git'
+
+alias d='docker'
+alias dc='docker-compose'
+
+alias r='ranger'
+alias rcd='ranger-cd'
+alias z='zathura --fork'
+
+alias todo='ag --pager="less -R" TODO'
+alias conflict='ag --pager="less -R" "[<>]{3,20}"'
+
+alias xclip='wl-copy'
+
+alias findall='rga'
+
+#alias vim='mvim -v'
+
+#alias fum='cd ~/chalmers/FuM/'
+#alias spex='cd ~/chalmers/spexet/'
+
+# Klimator
+# source ~/klimator/aliases
+
+# Get the first file with START HERE in it and fire up vim at that line.
+alias start='vim $(ag "START HERE" | head -1 | sed -r -e "s/(^.*)\:(.*)\:.*$/+\2 \1/")'
+
+# Aliases to start gui applications from the terminal
+source ~/.application_aliases
+
+alias thesis='cd ~/chalmers/thesis/IdrisToAgda'
+
+#alias mars='java -ea -jar ~/chalmers/dst/MARS44_PET11d.jar'
+
+alias confgit='git --git-dir=$HOME/.cfg --work-tree=$HOME'
+
+bindkey "^P" history-beginning-search-backward
+bindkey "^N" history-beginning-search-forward
+
+zhist () {
+  ag $1 ~/.zhistory
+}
+
+pb () {
+  pandoc --template="pb-template.tex" -o $1.pdf $1.md && open $1.pdf
+}
+
+wg () {
+  curl -O $1
+}
+
+
+
+
