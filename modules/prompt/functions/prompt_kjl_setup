@@ -16,11 +16,11 @@ function +vi-git_status {
   fi
 }
 
-function prompt_minimal_precmd {
+function prompt_kjl_precmd {
   vcs_info
 }
 
-function prompt_minimal_setup {
+function prompt_kjl_setup {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
   prompt_opts=(cr percent sp subst)
@@ -30,21 +30,51 @@ function prompt_minimal_setup {
   autoload -Uz vcs_info
 
   # Add hook for calling vcs_info before each command.
-  add-zsh-hook precmd prompt_minimal_precmd
+  add-zsh-hook precmd prompt_kjl_precmd
 
   # Set vcs_info parameters.
   zstyle ':vcs_info:*' enable bzr git hg svn
   zstyle ':vcs_info:*' check-for-changes true
-  zstyle ':vcs_info:*' stagedstr '%F{green}●%f'
-  zstyle ':vcs_info:*' unstagedstr '%F{yellow}●%f'
+  zstyle ':vcs_info:*' stagedstr ' %F{green}●%f'
+  zstyle ':vcs_info:*' unstagedstr ' %F{yellow}●%f'
   zstyle ':vcs_info:*' formats ' - [%b%c%u]'
   zstyle ':vcs_info:*' actionformats " - [%b%c%u|%F{cyan}%a%f]"
   zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b|%F{cyan}%r%f'
   zstyle ':vcs_info:git*+set-message:*' hooks git_status
 
+  # Set git-info parameters.
+  zstyle ':prezto:module:git:info' verbose 'yes'
+  zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
+  zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✚%f%%b'
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⬆%f%%b'
+  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⬇%f%%b'
+  zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
+  zstyle ':prezto:module:git:info:commit' format ' %%B%F{3}%.7c%f%%b'
+  zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
+  zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✱%f%%b'
+  zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
+  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}➜%f%%b'
+  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}✭%f%%b'
+  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}═%f%%b'
+  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}◼%f%%b'
+  zstyle ':prezto:module:git:info:keys' format \
+    'status' '%b %p %c:%s%A%B%S%a%d%m%r%U%u'
+
+  # Set up non-zero return value display
+  local show_return="✘ "
+  # Default is to show the return value
+  if zstyle -T ':prezto:module:prompt' show-return-val; then
+    show_return+='%? '
+  fi
+
   # Define prompts.
-  PROMPT='%2~${vcs_info_msg_0_} » '
-  RPROMPT=''
+  # prompt-pwd
+  PROMPT='%F{4} $(prompt-pwd)%f${vcs_info_msg_0_} %B%F{1}▶ %f%b'
+  # PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_sorin_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
+  RPROMPT='${editor_info[overwrite]}%(?:: %F{1}'
+  RPROMPT+=${show_return}
+  RPROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_sorin_git}'
+  SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
 
-prompt_minimal_setup "$@"
+prompt_kjl_setup "$@"
