@@ -75,7 +75,7 @@ function prompt_kjl_setup {
 
   # Define prompts.
   # prompt-pwd
-  PROMPT='%F{4}$(prompt-pwd)%f${vcs_info_msg_0_} %B%F{1}❯ %f%b'
+  PROMPT='${SSH_TTY:+"%F{2}%n%f%F{7}@%f%F{3}%m%f "}%F{4}$(prompt-pwd)%f${vcs_info_msg_0_} %B%F{1}❯ %f%b'
   # PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_sorin_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
   RPROMPT='${editor_info[overwrite]}%(?:: %F{1}'
   RPROMPT+=${show_return}
