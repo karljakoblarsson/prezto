@@ -29,11 +29,14 @@ fi
 
 path+=('/home/jakob/.local/bin')
 
-path+=('/home/jakob/chalmers/os/pintos/src/utils')
+# path+=('/home/jakob/chalmers/os/pintos/src/utils')
+path+=('/home/jakob/.gem/ruby/2.6.0/bin')
 export BXSHARE='/usr/share/bochs'
 
 export path
 
+XDG_CONFIG_HOME='/home/jakob/.config'
+export XDG_CONFIG_HOME
 
 lua_path+=('/home/jakob/.luarocks')
 export lua_path
@@ -71,6 +74,7 @@ alias la='ls -lha'
 
 alias gh='git status'
 alias gs='git status'
+alias gd='git diff'
 alias ga='git add'
 alias g='git'
 
@@ -86,7 +90,13 @@ alias conflict='ag --pager="less -R" "[<>]{3,20}"'
 
 alias xclip='wl-copy'
 
+alias reboot='shutdown -r now'
+
 alias findall='rga'
+
+alias diff='diff --color'
+
+alias wifi='w3m routerlogin.net && ping 1.1.1.1'
 
 #alias vim='mvim -v'
 
@@ -110,6 +120,10 @@ alias confgit='git --git-dir=$HOME/.cfg --work-tree=$HOME'
 
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward
+
+itao () {
+  ita -o $1.agda $1.lidr
+}
 
 zhist () {
   ag $1 ~/.zhistory
